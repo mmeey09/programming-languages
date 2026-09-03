@@ -1,0 +1,8 @@
+salary = float(input("Введите зарплату: "))
+bonus_percent = float(input("Введите процент премии: "))
+
+bonus = salary * bonus_percent / 100
+total = salary + bonus
+
+print("Премия:", bonus)
+print("Итоговая зарплата:", total)

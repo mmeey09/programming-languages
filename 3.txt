@@ -1,0 +1,12 @@
+hour = int(input("Введите часы: "))
+minute = int(input("Введите минуты: "))
+duration = int(input("Введите продолжительность в минутах: "))
+
+minute = minute + duration
+
+hour = hour + minute // 60
+minute = minute % 60
+
+hour = hour % 24
+
+print("Время окончания:", hour, ":", minute, sep="")
