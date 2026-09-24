@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Расчёт доставки</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Расчёт доставки</h1>
+
+    <form id="deliveryForm">
+
+        <label for="city">Город:</label>
+        <input type="text" id="city" placeholder="Введите город">
+
+        <br><br>
+
+        <label for="weight">Вес посылки (кг):</label>
+        <input type="number" id="weight" placeholder="Введите вес">
+
+        <br><br>
+
+        <label for="delivery">Тип доставки:</label>
+        <select id="delivery">
+            <option value="">Выберите доставку</option>
+            <option value="Обычная">Обычная</option>
+            <option value="Экспресс">Экспресс</option>
+        </select>
+
+        <br><br>
+
+        <button type="submit">Рассчитать</button>
+
+    </form>
+
+    <p id="message"></p>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
