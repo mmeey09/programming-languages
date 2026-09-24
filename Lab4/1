@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация студента</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Регистрация студента</h1>
+
+    <form id="studentForm">
+
+        <label for="name">ФИО:</label>
+        <input type="text" id="name" placeholder="Введите ФИО">
+
+        <br><br>
+
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" placeholder="Введите e-mail">
+
+        <br><br>
+
+        <label for="course">Курс:</label>
+        <select id="course">
+            <option value="">Выберите курс</option>
+            <option value="1">1 курс</option>
+            <option value="2">2 курс</option>
+            <option value="3">3 курс</option>
+            <option value="4">4 курс</option>
+        </select>
+
+        <br><br>
+
+        <p>Форма обучения:</p>
+
+        <label>
+            <input type="radio" name="education" value="budget">
+            Бюджет
+        </label>
+
+        <label>
+            <input type="radio" name="education" value="paid">
+            Платное
+        </label>
+
+        <br><br>
+
+        <label>
+            <input type="checkbox" id="agree">
+            Я согласен с правилами
+        </label>
+
+        <br><br>
+
+        <button type="submit">Отправить</button>
+
+    </form>
+
+    <p id="message"></p>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
