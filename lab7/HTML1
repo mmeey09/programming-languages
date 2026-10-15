@@ -1,0 +1,362 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Кафе | Наше меню</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff8f0;
+      color: #3e2c23;
+    }
+
+    header {
+      background: #6f4e37;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 18px;
+      font-size: 32px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    nav button {
+      border: none;
+      border-radius: 25px;
+      padding: 12px 24px;
+      background: #f5e6d3;
+      color: #4b3023;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    nav button:hover,
+    nav button.active {
+      background: #d9a878;
+      color: white;
+    }
+
+    main {
+      max-width: 1100px;
+      min-height: 70vh;
+      margin: auto;
+      padding: 35px 20px;
+    }
+
+    .page {
+      display: none;
+      animation: appear 0.3s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #806957;
+      margin-bottom: 30px;
+    }
+
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 14px #0000000d;
+      transition: transform 0.25s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .food-image {
+      background: #f8eee3;
+      border-radius: 12px;
+      padding: 20px;
+      font-size: 65px;
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #806957;
+      line-height: 1.5;
+    }
+
+    .category {
+      display: inline-block;
+      background: #f5e6d3;
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    .price {
+      color: #9b603d;
+      font-size: 21px;
+      font-weight: bold;
+    }
+
+    .promo {
+      max-width: 600px;
+      margin: 18px auto;
+      padding: 25px;
+      border-radius: 16px;
+      background: white;
+      text-align: center;
+      box-shadow: 0 4px 14px #0000000d;
+    }
+
+    .promo span {
+      font-size: 40px;
+    }
+
+    .address-card {
+      max-width: 600px;
+      margin: 25px auto;
+      padding: 30px;
+      border-radius: 16px;
+      background: white;
+      text-align: center;
+      line-height: 1.8;
+      box-shadow: 0 4px 14px #0000000d;
+    }
+
+    footer {
+      background: #6f4e37;
+      color: white;
+      text-align: center;
+      padding: 22px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 750px) {
+      .menu {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 480px) {
+      .menu {
+        grid-template-columns: 1fr;
+      }
+
+      nav {
+        gap: 7px;
+      }
+
+      nav button {
+        padding: 10px 16px;
+        font-size: 14px;
+      }
+
+      h2 {
+        font-size: 27px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>☕ Кафе «Уют»</h1>
+
+    <nav>
+      <button class="active" data-page="menu">Меню</button>
+      <button data-page="promotions">Акции</button>
+      <button data-page="address">Адрес</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Вкладка меню -->
+    <section id="menu" class="page active">
+      <h2>Наше меню 🍰</h2>
+      <p class="subtitle">
+        Вкусная еда и напитки для хорошего настроения!
+      </p>
+
+      <div id="dish-list" class="menu"></div>
+    </section>
+
+    <!-- Вкладка акций -->
+    <section id="promotions" class="page">
+      <h2>Наши акции 🎉</h2>
+      <p class="subtitle">Приятные предложения для наших гостей</p>
+
+      <div class="promo">
+        <span>☕🥐</span>
+        <h3>Завтрак вместе</h3>
+        <p>Кофе и круассан со скидкой 20% до 11:00.</p>
+      </div>
+
+      <div class="promo">
+        <span>🍰</span>
+        <h3>Сладкая пятница</h3>
+        <p>Скидка 15% на все десерты каждую пятницу.</p>
+      </div>
+
+      <div class="promo">
+        <span>🎁</span>
+        <h3>Подарок имениннику</h3>
+        <p>Специальный комплимент в день рождения.</p>
+      </div>
+    </section>
+
+    <!-- Вкладка адреса -->
+    <section id="address" class="page">
+      <h2>Ждём вас в гости 📍</h2>
+      <p class="subtitle">Будем рады видеть вас в нашем кафе!</p>
+
+      <div class="address-card">
+        <h3>📍 Наш адрес</h3>
+        <p>г. Алматы, ул. Абая, 00</p>
+
+        <h3>🕒 Время работы</h3>
+        <p>Ежедневно с 08:00 до 22:00</p>
+
+        <h3>☎ Телефон</h3>
+        <p>
+          <a href="tel:+77000000000">+7 (700) 000-00-00</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 Кафе «Уют» | Сделано с любовью ☕</p>
+  </footer>
+
+  <script>
+    // Массив объектов с блюдами
+    const dishes = [
+      {
+        id: 1,
+        name: "Капучино",
+        description: "Ароматный кофе с молочной пенкой",
+        price: 1200,
+        category: "Напитки",
+        emoji: "☕"
+      },
+      {
+        id: 2,
+        name: "Круассан",
+        description: "Свежая хрустящая выпечка",
+        price: 900,
+        category: "Выпечка",
+        emoji: "🥐"
+      },
+      {
+        id: 3,
+        name: "Чизкейк",
+        description: "Нежный сливочный десерт",
+        price: 1800,
+        category: "Десерты",
+        emoji: "🍰"
+      },
+      {
+        id: 4,
+        name: "Пицца",
+        description: "Сыр, томаты и ароматные специи",
+        price: 2500,
+        category: "Основные блюда",
+        emoji: "🍕"
+      },
+      {
+        id: 5,
+        name: "Мороженое",
+        description: "Нежное сливочное мороженое",
+        price: 1000,
+        category: "Десерты",
+        emoji: "🍨"
+      },
+      {
+        id: 6,
+        name: "Лимонад",
+        description: "Освежающий лимонад с лимоном",
+        price: 800,
+        category: "Напитки",
+        emoji: "🍋"
+      }
+    ];
+
+    // Создание карточек из массива объектов
+    const dishList = document.getElementById("dish-list");
+
+    dishList.innerHTML = dishes.map(dish => `
+      <article class="card">
+        <div class="food-image">${dish.emoji}</div>
+        <h3>${dish.name}</h3>
+        <p>${dish.description}</p>
+        <span class="category">${dish.category}</span>
+        <div class="price">
+          ${dish.price.toLocaleString("ru-RU")} ₸
+        </div>
+      </article>
+    `).join("");
+
+    // Переключение вкладок без перезагрузки страницы
+    const buttons = document.querySelectorAll("nav button");
+    const pages = document.querySelectorAll(".page");
+
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        const pageId = button.dataset.page;
+
+        pages.forEach(page => {
+          page.classList.toggle("active", page.id === pageId);
+        });
+
+        buttons.forEach(item => {
+          item.classList.toggle("active", item === button);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
