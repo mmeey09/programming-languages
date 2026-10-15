@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель заказов</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            text-align: center;
+        }
+
+        header {
+            background-color: #345b80;
+            color: white;
+            padding: 20px;
+        }
+
+        .tabs {
+            margin: 20px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #dddddd;
+        }
+
+        button:hover {
+            background-color: #bcd6ee;
+        }
+
+        .tab.active {
+            background-color: #345b80;
+            color: white;
+        }
+
+        .orders {
+            padding: 10px;
+        }
+
+        .order {
+            background-color: white;
+            max-width: 400px;
+            margin: 15px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px #00000015;
+        }
+
+        .status {
+            color: #345b80;
+            font-weight: bold;
+        }
+
+        .empty {
+            color: #777777;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>📦 Панель заказов</h1>
+        <p>Управление заказами</p>
+    </header>
+
+    <!-- Вкладки и счетчики -->
+    <div class="tabs">
+        <button class="tab active" onclick="showOrders('Новые', this)">
+            Новые (<span id="countNew">0</span>)
+        </button>
+
+        <button class="tab" onclick="showOrders('В работе', this)">
+            В работе (<span id="countWork">0</span>)
+        </button>
+
+        <button class="tab" onclick="showOrders('Готовые', this)">
+            Готовые (<span id="countReady">0</span>)
+        </button>
+    </div>
+
+    <!-- Здесь будут отображаться заказы -->
+    <div id="orders" class="orders"></div>
+
+    <script>
+        // Список заказов
+        let orders = [
+            {
+                id: 1,
+                name: "Заказ №1",
+                product: "Кофе и круассан",
+                status: "Новые"
+            },
+            {
+                id: 2,
+                name: "Заказ №2",
+                product: "Пицца",
+                status: "Новые"
+            },
+            {
+                id: 3,
+                name: "Заказ №3",
+                product: "Чизкейк",
+                status: "В работе"
+            },
+            {
+                id: 4,
+                name: "Заказ №4",
+                product: "Лимонад",
+                status: "Готовые"
+            }
+        ];
+
+        // Текущая вкладка
+        let currentStatus = "Новые";
+
+        // Показываем заказы выбранного статуса
+        function showOrders(status, button) {
+            currentStatus = status;
+
+            // Выделяем активную вкладку
+            let tabs = document.querySelectorAll(".tab");
+
+            tabs.forEach(function(tab) {
+                tab.classList.remove("active");
+            });
+
+            button.classList.add("active");
+
+            // Обновляем список заказов
+            renderOrders();
+        }
+
+        // Выводим заказы на экран
+        function renderOrders() {
+            let container = document.getElementById("orders");
+
+            // Выбираем заказы по статусу
+            let filteredOrders = orders.filter(function(order) {
+                return order.status === currentStatus;
+            });
+
+            container.innerHTML = "";
+
+            // Если заказов нет
+            if (filteredOrders.length === 0) {
+                container.innerHTML =
+                    '<p class="empty">В этой вкладке пока нет заказов.</p>';
+            }
+
+            // Создаем карточки заказов
+            filteredOrders.forEach(function(order) {
+                let card = document.createElement("div");
+                card.className = "order";
+
+                let title = document.createElement("h3");
+                title.textContent = order.name;
+
+                let product = document.createElement("p");
+                product.textContent = "Товар: " + order.product;
+
+                let status = document.createElement("p");
+                status.className = "status";
+                status.textContent = "Статус: " + order.status;
+
+                card.appendChild(title);
+                card.appendChild(product);
+                card.appendChild(status);
+
+                // Кнопка изменения статуса
+                let button = document.createElement("button");
+
+                if (order.status === "Новые") {
+                    button.textContent = "Начать работу";
+
+                    button.onclick = function() {
+                        changeStatus(order.id, "В работе");
+                    };
+                } else if (order.status === "В работе") {
+                    button.textContent = "Завершить заказ";
+
+                    button.onclick = function() {
+                        changeStatus(order.id, "Готовые");
+                    };
+                } else {
+                    button.textContent = "Заказ готов";
+                    button.disabled = true;
+                }
+
+                card.appendChild(button);
+                container.appendChild(card);
+            });
+
+            // Обновляем счетчики
+            updateCounters();
+        }
+
+        // Изменяем статус заказа
+        function changeStatus(id, newStatus) {
+            let order = orders.find(function(item) {
+                return item.id === id;
+            });
+
+            if (order) {
+                order.status = newStatus;
+            }
+
+            // Обновляем список текущей вкладки
+            renderOrders();
+        }
+
+        // Подсчитываем количество заказов
+        function updateCounters() {
+            let newCount = orders.filter(function(order) {
+                return order.status === "Новые";
+            }).length;
+
+            let workCount = orders.filter(function(order) {
+                return order.status === "В работе";
+            }).length;
+
+            let readyCount = orders.filter(function(order) {
+                return order.status === "Готовые";
+            }).length;
+
+            document.getElementById("countNew").textContent = newCount;
+            document.getElementById("countWork").textContent = workCount;
+            document.getElementById("countReady").textContent = readyCount;
+        }
+
+        // Первый показ заказов при открытии страницы
+        renderOrders();
+    </script>
+
+</body>
+</html>
