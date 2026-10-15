@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог книг</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+            margin: 0;
+        }
+
+        header {
+            background-color: #4b7053;
+            color: white;
+            padding: 20px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #c5ddc8;
+        }
+
+        .page {
+            display: none;
+            padding: 20px;
+        }
+
+        .book {
+            background-color: white;
+            margin: 15px auto;
+            padding: 15px;
+            max-width: 350px;
+            border-radius: 10px;
+        }
+
+        .page.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>📚 Каталог книг</h1>
+
+        <!-- Кнопки переключения вкладок -->
+        <button onclick="showPage('catalog')">Каталог</button>
+        <button onclick="showPage('favorites')">Избранное</button>
+        <button onclick="showPage('about')">О библиотеке</button>
+    </header>
+
+    <!-- Вкладка Каталог -->
+    <div id="catalog" class="page active">
+        <h2>Наши книги</h2>
+        <div id="bookList"></div>
+    </div>
+
+    <!-- Вкладка Избранное -->
+    <div id="favorites" class="page">
+        <h2>Избранные книги ❤️</h2>
+        <div id="favoriteList"></div>
+    </div>
+
+    <!-- Вкладка О библиотеке -->
+    <div id="about" class="page">
+        <h2>О библиотеке</h2>
+        <p>Добро пожаловать в нашу библиотеку!</p>
+        <p>Здесь вы можете найти интересные книги.</p>
+        <p>Читайте и открывайте новые миры!</p>
+    </div>
+
+    <script>
+        // Список книг
+        let books = [
+            {
+                id: 1,
+                title: "Маленький принц",
+                author: "Антуан де Сент-Экзюпери"
+            },
+            {
+                id: 2,
+                title: "Гарри Поттер",
+                author: "Дж. К. Роулинг"
+            },
+            {
+                id: 3,
+                title: "Алиса в Стране чудес",
+                author: "Льюис Кэрролл"
+            }
+        ];
+
+        // Список избранных книг
+        let favorites = [];
+
+        // Показываем нужную вкладку
+        function showPage(pageId) {
+            let pages = document.querySelectorAll(".page");
+
+            pages.forEach(function(page) {
+                page.classList.remove("active");
+            });
+
+            document.getElementById(pageId).classList.add("active");
+
+            if (pageId === "favorites") {
+                showFavorites();
+            }
+        }
+
+        // Показываем все книги
+        function showBooks() {
+            let list = document.getElementById("bookList");
+
+            list.innerHTML = "";
+
+            books.forEach(function(book) {
+                list.innerHTML += `
+                    <div class="book">
+                        <h3>${book.title}</h3>
+                        <p>Автор: ${book.author}</p>
+                        <button onclick="addFavorite(${book.id})">
+                            Добавить в избранное ❤️
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        // Добавляем книгу в избранное
+        function addFavorite(id) {
+            let book = books.find(function(item) {
+                return item.id === id;
+            });
+
+            if (!favorites.includes(book)) {
+                favorites.push(book);
+                alert("Книга добавлена в избранное!");
+            } else {
+                alert("Эта книга уже в избранном!");
+            }
+        }
+
+        // Показываем избранные книги
+        function showFavorites() {
+            let list = document.getElementById("favoriteList");
+
+            list.innerHTML = "";
+
+            if (favorites.length === 0) {
+                list.innerHTML = "<p>Избранных книг пока нет.</p>";
+                return;
+            }
+
+            favorites.forEach(function(book) {
+                list.innerHTML += `
+                    <div class="book">
+                        <h3>${book.title}</h3>
+                        <p>Автор: ${book.author}</p>
+                        <button onclick="removeFavorite(${book.id})">
+                            Удалить
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        // Удаляем книгу из избранного
+        function removeFavorite(id) {
+            favorites = favorites.filter(function(book) {
+                return book.id !== id;
+            });
+
+            showFavorites();
+        }
+
+        // Запускаем отображение книг
+        showBooks();
+    </script>
+
+</body>
+</html>
