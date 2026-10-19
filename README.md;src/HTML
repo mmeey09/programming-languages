@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мероприятия университета</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #eeeeff;
+            margin: 20px;
+        }
+
+        h1 {
+            color: darkblue;
+            text-align: center;
+        }
+
+        .event {
+            background: white;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 10px;
+        }
+
+        input, select, button {
+            padding: 10px;
+            margin: 5px;
+        }
+
+        button {
+            background: darkblue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Каталог мероприятий университета</h1>
+
+<h2>Поиск мероприятий</h2>
+
+<input id="search" placeholder="Название мероприятия">
+
+<select id="category">
+    <option value="Все">Все категории</option>
+    <option value="Спорт">Спорт</option>
+    <option value="Наука">Наука</option>
+    <option value="Образование">Образование</option>
+</select>
+
+<button onclick="showEvents()">Найти</button>
+
+<h2>Список мероприятий</h2>
+
+<div id="events"></div>
+
+<h2>Добавить мероприятие</h2>
+
+<input id="title" placeholder="Название">
+<input id="date" type="date">
+
+<select id="newCategory">
+    <option value="Спорт">Спорт</option>
+    <option value="Наука">Наука</option>
+    <option value="Образование">Образование</option>
+</select>
+
+<button onclick="addEvent()">Добавить</button>
+
+<p id="message"></p>
+
+<script>
+    let events = [
+        {
+            title: "Турнир по футболу",
+            category: "Спорт",
+            date: "2026-10-28",
+            participants: []
+        },
+        {
+            title: "Конкурс проектов",
+            category: "Наука",
+            date: "2026-10-30",
+            participants: []
+        },
+        {
+            title: "День открытых дверей",
+            category: "Образование",
+            date: "2026-10-25",
+            participants: []
+        }
+    ];
+
+    function showEvents() {
+        let list = document.getElementById("events");
+        let search = document.getElementById("search")
+            .value.toLowerCase();
+        let category = document.getElementById("category").value;
+
+        list.innerHTML = "";
+
+        for (let i = 0; i < events.length; i++) {
+            let event = events[i];
+
+            if (
+                event.title.toLowerCase().includes(search) &&
+                (category == "Все" || event.category == category)
+            ) {
+                let card = document.createElement("div");
+                card.className = "event";
+
+                let title = document.createElement("h3");
+                title.textContent = event.title;
+
+                let info = document.createElement("p");
+                info.textContent =
+                    "Категория: " + event.category +
+                    ", дата: " + event.date;
+
+                let button = document.createElement("button");
+                button.textContent = "Зарегистрироваться";
+
+                button.onclick = function() {
+                    registerStudent(i);
+                };
+
+                card.appendChild(title);
+                card.appendChild(info);
+                card.appendChild(button);
+
+                list.appendChild(card);
+            }
+        }
+    }
+
+    function registerStudent(number) {
+        let name = prompt("Введите имя студента");
+        let email = prompt("Введите электронную почту");
+
+        if (name == null || email == null) {
+            return;
+        }
+
+        if (name.trim() == "" || email.trim() == "") {
+            alert("Заполните все поля!");
+            return;
+        }
+
+        if (!email.includes("@") || !email.includes(".")) {
+            alert("Введите правильную электронную почту!");
+            return;
+        }
+
+        for (let i = 0; i < events[number].participants.length; i++) {
+            if (
+                events[number].participants[i].email.toLowerCase() ==
+                email.trim().toLowerCase()
+            ) {
+                alert("Вы уже зарегистрированы!");
+                return;
+            }
+        }
+
+        events[number].participants.push({
+            name: name.trim(),
+            email: email.trim()
+        });
+
+        alert("Вы успешно зарегистрировались!");
+    }
+
+    function addEvent() {
+        let title = document.getElementById("title").value.trim();
+        let date = document.getElementById("date").value;
+        let category = document.getElementById("newCategory").value;
+
+        if (title == "" || date == "") {
+            document.getElementById("message").textContent =
+                "Заполните все поля!";
+            return;
+        }
+
+        events.push({
+            title: title,
+            category: category,
+            date: date,
+            participants: []
+        });
+
+        document.getElementById("message").textContent =
+            "Мероприятие добавлено!";
+
+        document.getElementById("title").value = "";
+        document.getElementById("date").value = "";
+
+        showEvents();
+    }
+
+    showEvents();
+</script>
+
+</body>
+</html>
