@@ -32,7 +32,6 @@
             background: darkblue;
             color: white;
             border: none;
-            cursor: pointer;
         }
     </style>
 </head>
@@ -74,6 +73,8 @@
 <p id="message"></p>
 
 <script>
+    // Список мероприятий
+
     let events = [
         {
             title: "Турнир по футболу",
@@ -95,10 +96,11 @@
         }
     ];
 
+    // Показать мероприятия
+
     function showEvents() {
         let list = document.getElementById("events");
-        let search = document.getElementById("search")
-            .value.toLowerCase();
+        let search = document.getElementById("search").value.toLowerCase();
         let category = document.getElementById("category").value;
 
         list.innerHTML = "";
@@ -110,32 +112,19 @@
                 event.title.toLowerCase().includes(search) &&
                 (category == "Все" || event.category == category)
             ) {
-                let card = document.createElement("div");
-                card.className = "event";
-
-                let title = document.createElement("h3");
-                title.textContent = event.title;
-
-                let info = document.createElement("p");
-                info.textContent =
-                    "Категория: " + event.category +
-                    ", дата: " + event.date;
-
-                let button = document.createElement("button");
-                button.textContent = "Зарегистрироваться";
-
-                button.onclick = function() {
-                    registerStudent(i);
-                };
-
-                card.appendChild(title);
-                card.appendChild(info);
-                card.appendChild(button);
-
-                list.appendChild(card);
+                list.innerHTML +=
+                    "<div class='event'>" +
+                    "<h3>" + event.title + "</h3>" +
+                    "<p>Категория: " + event.category + "</p>" +
+                    "<p>Дата: " + event.date + "</p>" +
+                    "<button onclick='registerStudent(" + i + ")'>" +
+                    "Зарегистрироваться</button>" +
+                    "</div>";
             }
         }
     }
+
+    // Регистрация студента
 
     function registerStudent(number) {
         let name = prompt("Введите имя студента");
@@ -151,34 +140,35 @@
         }
 
         if (!email.includes("@") || !email.includes(".")) {
-            alert("Введите правильную электронную почту!");
+            alert("Введите правильную почту!");
             return;
         }
 
-        for (let i = 0; i < events[number].participants.length; i++) {
-            if (
-                events[number].participants[i].email.toLowerCase() ==
-                email.trim().toLowerCase()
-            ) {
+        let participants = events[number].participants;
+
+        for (let i = 0; i < participants.length; i++) {
+            if (participants[i].email == email) {
                 alert("Вы уже зарегистрированы!");
                 return;
             }
         }
 
-        events[number].participants.push({
-            name: name.trim(),
-            email: email.trim()
+        participants.push({
+            name: name,
+            email: email
         });
 
         alert("Вы успешно зарегистрировались!");
     }
 
+    // Добавление мероприятия
+
     function addEvent() {
-        let title = document.getElementById("title").value.trim();
+        let title = document.getElementById("title").value;
         let date = document.getElementById("date").value;
         let category = document.getElementById("newCategory").value;
 
-        if (title == "" || date == "") {
+        if (title.trim() == "" || date == "") {
             document.getElementById("message").textContent =
                 "Заполните все поля!";
             return;
@@ -200,8 +190,12 @@
         showEvents();
     }
 
+    // Показать мероприятия при открытии страницы
+
     showEvents();
 </script>
 
+</body>
+</html>
 </body>
 </html>
